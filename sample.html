@@ -1,0 +1,333 @@
+<html>
+	<head>
+		<title>Richard's Resume</title>
+		<style>
+			html *{
+				font-size: 12pt;
+				color: #000;
+				font-family: Arial !important;
+			}
+			p{
+				margin-top: 3px;
+				margin-bottom: 3px;
+				color: #666666;
+				font-style: italic;
+			}
+			ul{
+				margin-top: 3px;
+				margin-bottom: 3px;
+			}
+			li{
+				margin-top: 3px;
+				color: #666666;
+				font-style: italic;
+			}
+			div{
+				border-top: 1px solid #000;
+				margin-top: 8px;
+				padding-top: 5px;
+				padding-left: 15px;
+			}
+			a{
+				text-decoration: none;
+			}
+			
+			.qr-code img{
+				width: 110px;
+			}
+			.qr-code{
+				padding: 10px;
+				margin: -30px 0 0 -10px;
+				float: left;
+			}
+			#cover-letter, #header, .qr-code, #main, #editor, #editor-content{
+				border: none;
+			}
+			.title{
+				text-transform: uppercase;
+				margin-top: 3px;
+				margin-bottom: 3px;
+				margin-left: -15px;
+			}
+			.subtitle{
+				margin-top: 6px;
+				margin-bottom: 3px;
+				font-style: italic;
+			}
+			#header .title{
+				font-size: 16pt;
+				margin-left: 0;
+			}
+			#header .subtitle{
+				font-size: 14pt;
+				font-weight: 100;
+			}
+			#header{
+				padding-left: 0;
+			}			
+			
+			#main{
+				width: 210mm;
+				padding-left: 0;
+			}
+			
+			#skills .skills-ul li:last-child:after {
+				content: ".";
+			}
+			#skills .skills-ul{
+				display: inline;
+				list-style: none;
+				padding: 0;
+			}
+			#skills .skills-ul li{
+				display: inline;
+			}
+			#skills .skills-ul li:after{
+				content: ", ";
+			}
+			#skills .title{
+				margin-top: 3px;
+				margin-bottom: 3px;
+			}
+			
+			#editor{
+				float: right;
+			}
+		</style>
+		<script>
+			window.onload = function(){
+				loadMenu();
+			};
+			
+			function loadMenu(){
+				var items = [];
+				var allIds = document.querySelectorAll('*[id]');
+				allIds.forEach(function(entry){
+					if (entry.className != "exclude")
+					{
+						//console.log(entry);
+						var classes = entry.querySelectorAll('*[class]');
+						var temp = [];
+						var i = 0;
+						classes.forEach(function(data){
+							var content = data.className;
+							if (i == 0)
+								content = entry.id;
+							else if (content == "title")
+								content = [content, data.innerText];
+							else if (content.includes("subtitle"))
+								content = [content.replace("subtitle ", ""), data.innerText];
+							temp.push(content);
+							i++;
+						});
+						items[entry.id] = temp;
+					}
+				});
+				var editor = document.getElementById("editor-content");
+				var content = "";
+				var i;
+				var j;
+				var len = Object.keys(items).length;
+				for (i = 0; i < len; i++)
+				{
+					var len2 = items[Object.keys(items)[i]].length;
+					for (j = 0; j < len2; j++)
+					{
+						var data;
+						if (j == 0)
+						{
+							data = "'" + items[Object.keys(items)[i]][j] + ";'";
+							content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "togleItem(" + data + ")" + '"' + "> <b>DIV: " + items[Object.keys(items)[i]][j] + "</b><br/>";
+						}
+						else if (typeof(items[Object.keys(items)[i]][j]) == "object")
+						{
+							if ((items[Object.keys(items)[i]][j][0] == "title") || (items[Object.keys(items)[i]][j][0].includes("sub-")))
+							{
+								data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j][0] + "'"
+								content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "togleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j][1] + "<br/>";
+							}
+						}
+						else
+						{
+							data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j] + "'"
+							content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "togleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j] + "<br/>";
+						}
+					}
+				}
+				
+				editor.innerHTML = content;
+			}
+			
+			function togleItem(data){
+				debugger;
+				var id = data.split(";")[0];
+				var cla = data.split(";")[1];
+				var doc = document.getElementById(id);
+				if (cla != "")
+				{
+					var claitem = doc.getElementsByClassName(cla)[0];
+					if (claitem.style.display == "none")
+						claitem.style.display = "block";
+					else
+						claitem.style.display = "none";
+					
+					var att = doc.querySelectorAll("[for]");
+					if (att)
+					{
+						var len = Object.keys(att).length;
+						var i = 0;
+						for (i = 0; i < len; i++){
+							if (att[i].getAttribute("for") == cla)
+							{
+								if (att[i].style.display == "none")
+									att[i].style.display = "block";
+								else
+									att[i].style.display = "none";
+							}
+						}
+					}
+				}
+				else
+				{
+					if (doc.style.display == "none")
+						doc.style.display = "block";
+					else
+						doc.style.display = "none";
+				}				
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div id="editor" class="exclude" style=" width: 400px; background: #ddd; " >
+			<h1>Menu</h1>
+			<div id="editor-content" class="exclude">
+				
+			</div>
+		</div>
+		<div id="main" class="exclude">
+			<div id="cover-letter"></div>
+			<div id="header">
+				<div class="qr-code">
+					<img class="img" src="https://chart.googleapis.com/chart?cht=qr&chs=150x150&chld=L|0&chl=test"/>
+				</div>
+				<h1 class="title">Richard Hendricks</h1>
+				<h2 class="subtitle">Software Developer</h2>
+				<a class="website" href="http://www.piedpiper.com/">http://www.piedpiper.com/</a> | 
+				<a class="phone" href="tel:+10000000000">+1 000 0000000</a> | 
+				<a class="email" href="mailto:richard.hendricks@piedpiper.com">richard.hendricks@piedpiper.com</a> | 
+				<a class="linkedin" href="https://linkedin.com/">https://linkedin.com/in/richard-hendriks</a>
+			</div>
+			<div id="summary">
+				<h3 class="title">Summary</h3>
+				<p class="p-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a arcu libero. In posuere felis enim, eu bibendum libero sagittis eget. Mauris viverra lacus eu consequat volutpat. Duis ut pulvinar orci.</p>
+			</div>
+			<div id="experience">
+				<h3 class="title">Experience</h3>
+				<h3 class="subtitle sub-1">Sed sem ligula, Jan 2016 - Present</h3>
+				<ul class="ul exp-1" for="sub-1">
+					<li class="li-1">Phasellus aliquam, felis eu aliquam ullamcorper, ipsum tortor mollis libero, ac volutpat turpis orci et quam.</li>
+					<li class="li-2">Fusce lorem tellus, scelerisque eu laoreet ac, bibendum ut lectus.</li>
+					<li class="li-3">Ut auctor sem elit, non luctus augue molestie nec. Pellentesque vitae mollis lectus.</li>
+					<li class="li-4">Pellentesque molestie erat id nibh dapibus, nec pretium nulla placerat.</li>
+					<li class="li-5">Fusce eget consequat quam, ac efficitur justo. Etiam hendrerit libero nec nisi consequat pellentesque.</li>
+					<li class="li-6">MFusce gravida euismod orci, ut tempus mauris lobortis vitae.</li>
+					<li class="li-7">Quisque fermentum, leo ut lobortis interdum, dolor sem venenatis urna, quis pellentesque nulla lorem in ante.</li>
+					<li class="li-8">Morbi augue eros, condimentum ut ultricies vitae, elementum at libero. Vivamus tincidunt lacus sed cursus vulputate.</li>
+				</ul>
+				<h3 class="subtitle sub-2">Fusce eget porttitor nibh, Oct 2010 - Present</h3>
+				<ul class="ul exp-2" for="sub-2">
+					<li class="li-1">Morbi pretium, magna quis luctus accumsan, nulla ex rhoncus justo, eu tempor orci erat id metus. In sed vehicula felis.</li>
+					<li class="li-2">Praesent dictum, ante non suscipit iaculis, quam ex mattis metus, a bibendum nunc neque non ex.</li>
+				</ul>
+				<h3 class="subtitle sub-3">Duis sed pretium sem, Aug 2012 - Present</h3>
+				<ul class="ul exp-3" for="sub-3">
+					<li class="li-1">Donec elit erat, pharetra tristique augue ut, varius placerat neque.</li>
+				</ul>
+				<h3 class="subtitle sub-4">Duis ac accumsan lectus, Jun 2011 - Dec 2015</h3>
+				<ul class="ul exp-4" for="sub-4">
+					<li class="li-1">In rhoncus libero vitae mi bibendum, sed maximus augue mollis. Sed lacinia mollis dui, et varius nisl. Suspendisse eget vestibulum diam. Phasellus viverra tincidunt turpis, id gravida elit suscipit et.</li>
+				</ul>
+				<h3 class="subtitle sub-5">Vestibulum tincidunt nibh nec, May 2010 - Oct 2010</h3>
+				<ul class="ul exp-5" for="sub-5">
+					<li class="li-1">Quisque eu metus ac ex consequat ornare non eget massa.</li>
+				</ul>
+				<h3 class="subtitle sub-6">Aliquam sollicitudin, Jan 2009 - Oct 2009</h3>
+				<ul class="ul exp-6" for="sub-6">
+					<li class="li-1">Vivamus tincidunt mi nulla, nec porttitor nisi sodales at.</li>
+				</ul>
+			</div>
+			<div id="education">
+				<h3 class="title">Education</h3>
+				<h3 class="subtitle sub-1">Bachelor of Science in Information Technology</h3>
+				<ul class="ul edu-1">
+					<li class="li-1">Etiam tempus, Dec 2013.</li>
+				</ul>
+				<p class="subtitle sub-2"><b>Online courses:</b> CodeSchool, YouTube etc.</p>
+			</div>
+			<div id="skills">
+				<h3 class="title">Skills</h3>
+				<ul class="skills-ul">
+					<li class="li-1">Unity</li>
+					<li class="li-2">NGINX</li>
+					<li class="li-3">MySQL</li>
+					<li class="li-4">MongoDB</li>
+					<li class="li-5">Django</li>
+					<li class="li-6">Rails</li>
+					<li class="li-7">Angular</li>
+					<li class="li-8">jQuery</li>
+					<li class="li-9">Docker</li>
+					<li class="li-10">Linux Console</li>
+					<li class="li-11">GIT</li>
+					<li class="li-12">POS</li>
+					<li class="li-13">EMV</li>
+					<li class="li-14">Bots</li>
+					<li class="li-15">UML-Based Design</li>
+					<li class="li-16">Object-oriented programming</li>
+					<li class="li-17">Webdesign (HTML</li>
+					<li class="li-18">CSS)</li>
+					<li class="li-19">Sony Vegas</li>
+					<li class="li-20">Adobe Photoshop</li>
+					<li class="li-21">Adobe Illustrator</li>
+					<li class="li-22">SEO</li>
+					<li class="li-23">Marketing</li>
+					<li class="li-24">E-commerce</li>
+					<li class="li-25">Sales</li>
+					<li class="li-26">CMS management and implementation</li>
+					<li class="li-27">Wordpress</li>
+					<li class="li-28">Magento</li>
+					<li class="li-29">Product Management</li>
+					<li class="li-30">Chatbots</li>
+				</ul>
+			</div>
+			<div id="side-projects">
+				<h3 class="title">Side Projects</h3>
+				<h3 class="subtitle sub-1">Quisque sapien, Mar 2017.</h3>
+				<p class="p-1 sub-1">Integer efficitur tempor eleifend. In sit amet nunc massa. Etiam tincidunt congue lacus eleifend ultricies. Phasellus bibendum nibh blandit, aliquam dui quis, efficitur nisl.</p>
+				<h3 class="subtitle sub-2">Donec egestas, Jan 2017.</h3>
+				<p class="p-1 sub-2">Aenean viverra metus eu eros euismod, vel viverra lorem aliquam. Aenean pretium mattis euismod. Sed ornare eu arcu in auctor.</p>
+				<h3 class="subtitle sub-3">Suspendisse justo, Oct 2016.</h3>
+				<p class="p-1 sub-3">Quisque sed blandit nibh, non egestas diam. Maecenas turpis orci, suscipit a dapibus quis, ultricies ac neque.</p>
+				<h3 class="subtitle sub-4">Quisque suscipit, Sep 2016.</h3>
+				<p class="p-1 sub-4">Phasellus malesuada nisl posuere mauris interdum blandit. Mauris fringilla interdum ipsum, ut aliquam orci rutrum sit amet.</p>
+				<h3 class="subtitle sub-5">Nunc sit amet, Dec 2014.</h3>
+				<p class="p-1 sub-5">Etiam pulvinar dictum tortor, a vestibulum dui semper sed. In at tristique lacus, et hendrerit neque. In eros sem, egestas sit amet facilisis quis, iaculis non odio.</p>
+				<h3 class="subtitle sub-6">Cras congue, Nov 2014.</h3>
+				<p class="p-1 sub-6">Integer sed urna a elit porta pretium et at elit. In venenatis dignissim odio, et suscipit ipsum sollicitudin vitae. Morbi maximus facilisis rutrum.</p>
+				<h3 class="subtitle sub-7">Curabitur tincidunt, Nov 2010.</h3>
+				<p class="p-1 sub-7">Ut ac iaculis sapien. Fusce mollis molestie purus. Mauris vel dolor et nunc dignissim laoreet non id tortor.</p>
+				<h3 class="subtitle sub-last">More side projects at my GitHub profile: <a href="http://github.com/">http://github.com/piedpiper</a>.</h3>
+			</div>
+			<div id="additional-info">
+				<h3 class="title">Additional Information</h3>
+				<ul class="ul add-1">
+					<li class="li-1"><b>1st Place</b> at Hackathon X – Oct 2016.
+					<li class="li-2"><b>Lecturer</b> at MIT, Nov 2012.
+					<p class="p-1 li-2">Etiam in cursus velit, et fermentum dui.</p>
+					<li class="li-4"><b>Volunteer Work</b> – Voting Station Officer, 2006-2014.
+				</ul>
+			</div>
+		</div>
+	</body>
+	<footer></footer>
+</html>
