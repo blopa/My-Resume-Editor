@@ -36,9 +36,9 @@ function loadMenu(){
 			items[entry.id] = temp;
 		}
 	});
-	debugger;
 	var div = document.createElement('div');
 	div.id = "editor";
+	div.className = "hidden-print";
 	div.style.width = "400px";
 	div.style.background = "#ddd";
 	div.style.float = "right";
@@ -49,7 +49,9 @@ function loadMenu(){
 	editor.id = "editor-content";
 	div.appendChild(editor);
 	document.body.appendChild(div);
-	var content = "";
+	var cover = document.getElementById("cover-letter");
+	cover.innerHTML = cover.innerHTML.replace('{recruiter}', '<abbr class="{recruiter}">{recruiter}</abbr>', "g").replace('{company}', '<abbr class="{company}">{company}</abbr>', "g").replace('{seen_on}', '<abbr class="{seen_on}">{seen_on}</abbr>', "g").replace('{current_company}', '<abbr class="{current_company}">{current_company}</abbr>', "g").replace('{position}', '<abbr class="{position}">{position}</abbr>', "g");
+	var content = "<b>Alias</b><br/>{recruiter}: <input type='text' placeholder='{recruiter}' oninput='updateCover(this)'><br/>{company}: <input type='text' placeholder='{company}' oninput='updateCover(this)'><br/>{seen_on}: <input type='text' placeholder='{seen_on}' oninput='updateCover(this)'><br/>{current_company}: <input type='text' placeholder='{current_company}' oninput='updateCover(this)'><br/>{position}: <input type='text' placeholder='{position}' oninput='updateCover(this)'><br/><hr>";
 	var i;
 	var j;
 	var len = Object.keys(items).length;
@@ -85,6 +87,14 @@ function loadMenu(){
 	editor.innerHTML = content;
 }
 
+function updateCover(data){
+	debugger;
+	var cover = document.getElementById("cover-letter");
+	var classes = cover.getElementsByClassName(data.placeholder);
+	var len = Object.keys(classes).length;
+	for (var i = 0; i < len; i++)
+		classes[i].innerText = data.value;
+}
 function toggleItem(data){
 	debugger;
 	var id = data.split(";")[0];
