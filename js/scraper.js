@@ -44,7 +44,6 @@ function loadMenu(){
 	div.style.background = "#ddd";
 	div.style.float = "right";
 	var h1 = document.createElement('h1');
-	debugger;
 	var btn = document.createElement('input');
 	btn.type = "button";
 	btn.style.width = "100%";
