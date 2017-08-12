@@ -20,12 +20,12 @@ function loadMenu(){
 				if (inner.length >= 42)
 					inner = inner.substring(0, 42);
 				
-				if (i == 0)
+				if (data.tagName == "UL")
+					return;
+				else if (i == 0)
 					content = entry.id;
 				else if (content == "title")
 					content = [content, inner];
-				else if (data.tagName == "UL")
-					content = data.parentElement.getElementsByClassName(data.getAttribute("for"))[0].innerText;
 				else if (content.includes("subtitle"))
 					content = [content.replace("subtitle ", ""), inner];
 				else
@@ -59,23 +59,25 @@ function loadMenu(){
 		for (j = 0; j < len2; j++)
 		{
 			var data;
+			var desc = items[Object.keys(items)[i]][j];
 			if (j == 0)
 			{
-				data = "'" + items[Object.keys(items)[i]][j] + ";'";
-				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> <b>DIV: " + items[Object.keys(items)[i]][j] + "</b><br/>";
+				data = "'" + desc + ";'";
+				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> <b>DIV: " + desc + "</b><br/>";
 			}
-			else if (typeof(items[Object.keys(items)[i]][j]) == "object")
+			else if (typeof(desc) == "object")
 			{
-				//if ((items[Object.keys(items)[i]][j][0] == "title") || (items[Object.keys(items)[i]][j][0].includes("sub-")))
-				{
-					data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j][0] + "'";
-					content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j][1] + "<br/>";
-				}
+				data = "'" + items[Object.keys(items)[i]][0] + ";" + desc[0] + "'";
+				if ((desc[0] == "title") || (desc[0].includes("sub-")))
+					desc = "<b>" + desc[1] + "</b>";
+				else
+					desc = desc[1];
+				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + desc + "<br/>";
 			}
 			else
 			{
-				data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j] + "'";
-				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j] + "<br/>";
+				data = "'" + items[Object.keys(items)[i]][0] + ";" + desc + "'";
+				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + desc + "<br/>";
 			}
 		}
 	}
