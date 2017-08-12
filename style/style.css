@@ -3,6 +3,11 @@ html *{
 	color: #000;
 	font-family: Arial !important;
 }
+body{
+	background: #868686;
+	margin: auto;
+	display: table;
+}
 p{
 	margin-top: 3px;
 	margin-bottom: 3px;
@@ -66,6 +71,7 @@ a{
 	width: 210mm;
 	padding-left: 0;
 	float: left;
+	background: #ffffff;
 }
 
 #skills .skills-ul li:last-child:after {

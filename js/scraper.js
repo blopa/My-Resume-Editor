@@ -42,7 +42,9 @@ function loadMenu(){
 	div.style.width = "400px";
 	div.style.padding = "5px";
 	div.style.background = "#ddd";
-	div.style.float = "right";
+	//div.style.float = "right";
+	div.style.marginLeft = "210mm";
+	div.style.position = "absolute";
 	var h1 = document.createElement('h1');
 	var btn = document.createElement('input');
 	btn.type = "button";
@@ -105,9 +107,13 @@ function updateCover(data){
 	var cover = document.getElementById("cover-letter");
 	var classes = cover.getElementsByClassName(data.placeholder);
 	var len = Object.keys(classes).length;
+	var val = data.value;
+	if (val == "")
+		val = data.placeholder;
 	for (var i = 0; i < len; i++)
-		classes[i].innerText = data.value;
+		classes[i].innerText = val;
 }
+
 function toggleItem(data){
 	debugger;
 	var id = data.split(";")[0];
