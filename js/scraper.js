@@ -44,10 +44,16 @@ function loadMenu(){
 	div.style.background = "#ddd";
 	div.style.float = "right";
 	var h1 = document.createElement('h1');
+	var btn = document.createElement('input');
+	btn.type = "button";
+	btn.style.width = "100%";
+	btn.setAttribute("onclick", "window.print()");
+	btn.value = "Print!";
 	h1.appendChild(document.createTextNode("Menu"));
-	div.appendChild(h1);
 	var editor = document.createElement('div');
 	editor.id = "editor-content";
+	div.appendChild(h1);
+	div.appendChild(btn);
 	div.appendChild(editor);
 	document.body.appendChild(div);
 	var cover = document.getElementById("cover-letter");
