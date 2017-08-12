@@ -40,6 +40,7 @@ function loadMenu(){
 	div.id = "editor";
 	div.className = "hidden-print";
 	div.style.width = "400px";
+	div.style.padding = "5px";
 	div.style.background = "#ddd";
 	div.style.float = "right";
 	var h1 = document.createElement('h1');
@@ -50,9 +51,15 @@ function loadMenu(){
 	div.appendChild(editor);
 	document.body.appendChild(div);
 	var cover = document.getElementById("cover-letter");
-	cover.innerHTML = cover.innerHTML.replace('{recruiter}', '<abbr class="{recruiter}">{recruiter}</abbr>', "g").replace('{company}', '<abbr class="{company}">{company}</abbr>', "g").replace('{seen_on}', '<abbr class="{seen_on}">{seen_on}</abbr>', "g").replace('{current_company}', '<abbr class="{current_company}">{current_company}</abbr>', "g").replace('{position}', '<abbr class="{position}">{position}</abbr>', "g");
-	var content = "<b>Alias</b><br/>{recruiter}: <input type='text' placeholder='{recruiter}' oninput='updateCover(this)'><br/>{company}: <input type='text' placeholder='{company}' oninput='updateCover(this)'><br/>{seen_on}: <input type='text' placeholder='{seen_on}' oninput='updateCover(this)'><br/>{current_company}: <input type='text' placeholder='{current_company}' oninput='updateCover(this)'><br/>{position}: <input type='text' placeholder='{position}' oninput='updateCover(this)'><br/><hr>";
+	var alias = ["{recruiter}", "{company}", "{seen_on}", "{current_company}", "{position}"]; // ADD YOUR ALIAS HERE
 	var i;
+	var content = "<b>Alias</b><br/>";
+	for (i = 0; i < alias.length; i++)
+	{
+		cover.innerHTML = cover.innerHTML.replace(alias[i], '<abbr class="' + alias[i] + '">' + alias[i] + '</abbr>', "g");
+		content += "<p>" + alias[i] + ": <input type='text' placeholder='" + alias[i] + "' oninput='updateCover(this)'></p>";
+	}
+	content += "<hr>";
 	var j;
 	var len = Object.keys(items).length;
 	for (i = 0; i < len; i++)
