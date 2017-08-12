@@ -57,7 +57,7 @@ function loadMenu(){
 	div.appendChild(editor);
 	document.body.appendChild(div);
 	var cover = document.getElementById("cover-letter");
-	var alias = ["{recruiter}", "{company}", "{seen_on}", "{current_company}", "{position}"]; // ADD YOUR ALIAS HERE
+	var alias = ["{position}", "{seen_on}", "{company}", "{recruiter}", "{current_company}"]; // ADD YOUR ALIAS HERE
 	var i;
 	var content = "<b>Alias</b><br/>";
 	for (i = 0; i < alias.length; i++)
