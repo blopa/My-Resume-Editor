@@ -92,6 +92,7 @@ a{
 #cover-letter p{
 	color: #000;
 	font-style: normal;
+	margin: 15px 0;
 }
 .pagebreak{
 	page-break-before: always;
