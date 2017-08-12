@@ -86,6 +86,9 @@ a{
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
+#cover-letter {
+	margin-bottom: 100px;
+}
 #cover-letter p{
 	color: #000;
 	font-style: normal;
