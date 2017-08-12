@@ -14,12 +14,22 @@ function loadMenu(){
 			var i = 0;
 			classes.forEach(function(data){
 				var content = data.className;
+				var inner = data.innerText;
+				if (inner == "")
+					inner = data.tagName + " - " + data.className;
+				if (inner.length >= 42)
+					inner = inner.substring(0, 42);
+				
 				if (i == 0)
 					content = entry.id;
 				else if (content == "title")
-					content = [content, data.innerText];
+					content = [content, inner];
+				else if (data.tagName == "UL")
+					content = data.parentElement.getElementsByClassName(data.getAttribute("for"))[0].innerText;
 				else if (content.includes("subtitle"))
-					content = [content.replace("subtitle ", ""), data.innerText];
+					content = [content.replace("subtitle ", ""), inner];
+				else
+					content = [data.className, inner];
 				temp.push(content);
 				i++;
 			});
@@ -56,15 +66,15 @@ function loadMenu(){
 			}
 			else if (typeof(items[Object.keys(items)[i]][j]) == "object")
 			{
-				if ((items[Object.keys(items)[i]][j][0] == "title") || (items[Object.keys(items)[i]][j][0].includes("sub-")))
+				//if ((items[Object.keys(items)[i]][j][0] == "title") || (items[Object.keys(items)[i]][j][0].includes("sub-")))
 				{
-					data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j][0] + "'"
+					data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j][0] + "'";
 					content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j][1] + "<br/>";
 				}
 			}
 			else
 			{
-				data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j] + "'"
+				data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j] + "'";
 				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j] + "<br/>";
 			}
 		}
