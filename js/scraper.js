@@ -36,10 +36,11 @@ function loadMenu(){
 			items[entry.id] = temp;
 		}
 	});
-	debugger;
 	var div = document.createElement('div');
 	div.id = "editor";
+	div.className = "hidden-print";
 	div.style.width = "400px";
+	div.style.padding = "5px";
 	div.style.background = "#ddd";
 	div.style.float = "right";
 	var h1 = document.createElement('h1');
@@ -49,8 +50,16 @@ function loadMenu(){
 	editor.id = "editor-content";
 	div.appendChild(editor);
 	document.body.appendChild(div);
-	var content = "";
+	var cover = document.getElementById("cover-letter");
+	var alias = ["{recruiter}", "{company}", "{seen_on}", "{current_company}", "{position}"]; // ADD YOUR ALIAS HERE
 	var i;
+	var content = "<b>Alias</b><br/>";
+	for (i = 0; i < alias.length; i++)
+	{
+		cover.innerHTML = cover.innerHTML.replace(alias[i], '<abbr class="' + alias[i] + '">' + alias[i] + '</abbr>', "g");
+		content += "<p>" + alias[i] + ": <input type='text' placeholder='" + alias[i] + "' oninput='updateCover(this)'></p>";
+	}
+	content += "<hr>";
 	var j;
 	var len = Object.keys(items).length;
 	for (i = 0; i < len; i++)
@@ -85,6 +94,14 @@ function loadMenu(){
 	editor.innerHTML = content;
 }
 
+function updateCover(data){
+	debugger;
+	var cover = document.getElementById("cover-letter");
+	var classes = cover.getElementsByClassName(data.placeholder);
+	var len = Object.keys(classes).length;
+	for (var i = 0; i < len; i++)
+		classes[i].innerText = data.value;
+}
 function toggleItem(data){
 	debugger;
 	var id = data.split(";")[0];
