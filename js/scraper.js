@@ -14,12 +14,22 @@ function loadMenu(){
 			var i = 0;
 			classes.forEach(function(data){
 				var content = data.className;
-				if (i == 0)
+				var inner = data.innerText;
+				if (inner == "")
+					inner = data.tagName + " - " + data.className;
+				if (inner.length >= 42)
+					inner = inner.substring(0, 42);
+				
+				if (data.tagName == "UL")
+					return;
+				else if (i == 0)
 					content = entry.id;
 				else if (content == "title")
-					content = [content, data.innerText];
+					content = [content, inner];
 				else if (content.includes("subtitle"))
-					content = [content.replace("subtitle ", ""), data.innerText];
+					content = [content.replace("subtitle ", ""), inner];
+				else
+					content = [data.className, inner];
 				temp.push(content);
 				i++;
 			});
@@ -49,23 +59,25 @@ function loadMenu(){
 		for (j = 0; j < len2; j++)
 		{
 			var data;
+			var desc = items[Object.keys(items)[i]][j];
 			if (j == 0)
 			{
-				data = "'" + items[Object.keys(items)[i]][j] + ";'";
-				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> <b>DIV: " + items[Object.keys(items)[i]][j] + "</b><br/>";
+				data = "'" + desc + ";'";
+				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> <b>DIV: " + desc + "</b><br/>";
 			}
-			else if (typeof(items[Object.keys(items)[i]][j]) == "object")
+			else if (typeof(desc) == "object")
 			{
-				if ((items[Object.keys(items)[i]][j][0] == "title") || (items[Object.keys(items)[i]][j][0].includes("sub-")))
-				{
-					data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j][0] + "'"
-					content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j][1] + "<br/>";
-				}
+				data = "'" + items[Object.keys(items)[i]][0] + ";" + desc[0] + "'";
+				if ((desc[0] == "title") || (desc[0].includes("sub-")))
+					desc = "<b>" + desc[1] + "</b>";
+				else
+					desc = desc[1];
+				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + desc + "<br/>";
 			}
 			else
 			{
-				data = "'" + items[Object.keys(items)[i]][0] + ";" + items[Object.keys(items)[i]][j] + "'"
-				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + items[Object.keys(items)[i]][j] + "<br/>";
+				data = "'" + items[Object.keys(items)[i]][0] + ";" + desc + "'";
+				content += "<input type=" + '"' + "checkbox" + '"' + " onchange=" + '"' + "toggleItem(" + data + ")" + '"' + "> " + desc + "<br/>";
 			}
 		}
 	}
